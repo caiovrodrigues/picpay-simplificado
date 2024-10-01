@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: picpay
+  datasource:
+    url: jdbc:h2:mem:picpay
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  h2:
+    console.enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+integration:
+  autorizador:
+    uri: https://util.devi.tools/api/
