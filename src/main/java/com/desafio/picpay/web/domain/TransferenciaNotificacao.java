@@ -12,20 +12,23 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class TransferenciaEmailNotificacao {
+public class TransferenciaNotificacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToOne
+    @JoinColumn(name = "transferencia_id")
     private Transferencia transferencia;
 
     @Enumerated(EnumType.STRING)
     private EmailStatus status;
 
+    @Column(name = "tentativas")
     private Integer tentativas;
 
+    @Column(name = "enviado_em")
     private LocalDateTime enviadoEm;
 
 }

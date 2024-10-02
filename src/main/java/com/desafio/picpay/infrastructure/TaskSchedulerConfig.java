@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @EnableAsync
 @Component
-public class ExecutorConfig {
+public class TaskSchedulerConfig {
 
     @Bean(name = "asyncNotificacao")
     public TaskScheduler executor(){
@@ -16,7 +16,7 @@ public class ExecutorConfig {
         threadPoolTaskScheduler.setErrorHandler(exception -> {
             System.out.println("Houve um erro com o threadPoolTaskScheduler " + exception.getMessage());
         });
-        threadPoolTaskScheduler.setThreadNamePrefix("Thread para comunicação notificação externo");
+        threadPoolTaskScheduler.setThreadNamePrefix("Thread para comunicação notificação externo ");
         return threadPoolTaskScheduler;
     }
 

@@ -1,12 +1,10 @@
 package com.desafio.picpay.infrastructure.integration;
 
-import com.desafio.picpay.infrastructure.integration.dto.AutorizadorExterno;
 import com.desafio.picpay.web.domain.Transferencia;
-import com.desafio.picpay.web.domain.TransferenciaEmailNotificacao;
+import com.desafio.picpay.web.domain.TransferenciaNotificacao;
 import com.desafio.picpay.web.domain.enums.EmailStatus;
 import com.desafio.picpay.web.repositories.TransferenciaEmailNotificacaoRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -16,8 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ScheduledFuture;
 
 @Slf4j
 @Service
@@ -37,8 +33,8 @@ public class AutorizadorService {
         this.emailNotificacaoRepository = emailNotificacaoRepository;
     }
 
-    public AutorizadorExterno consultar(){
-        return webClient.get().uri(autorizadorUriProvider.autorizadorURI()).retrieve().bodyToMono(AutorizadorExterno.class).block();
+    public void consultar(){
+        webClient.get().uri(autorizadorUriProvider.autorizadorURI()).retrieve().toBodilessEntity().block();
     }
 
     @Async(value = "asyncNotificacao")
@@ -46,16 +42,16 @@ public class AutorizadorService {
         log.info("MÉTODO notificar() sendo executado pela thread -> " + Thread.currentThread().getName());
         URI uri = UriComponentsBuilder.fromHttpUrl(autorizadorUriProvider.notificacaoURI()).build().toUri();
 
-        var emailNotificacao = TransferenciaEmailNotificacao.builder().transferencia(transferencia).build();
+        var emailNotificacao = TransferenciaNotificacao.builder().transferencia(transferencia).build();
 
         tentarNotificarAndSalvar(emailNotificacao, uri, Instant.now(), 1);
     }
 
-    private void tentarNotificarAndSalvar(TransferenciaEmailNotificacao emailNotificacao, URI uri, Instant instant, int tentativa) {
+    private void tentarNotificarAndSalvar(TransferenciaNotificacao emailNotificacao, URI uri, Instant instant, int tentativa) {
         log.info("MÉTODO tentarNotificar() sendo executado pela thread -> " + Thread.currentThread().getName());
         if(tentativa > MAX_RETRIES){
             emailNotificacao.setStatus(EmailStatus.NOT_SENT);
-            emailNotificacao.setTentativas(tentativa);
+            emailNotificacao.setTentativas(tentativa - 1);
             emailNotificacao.setEnviadoEm(null);
             emailNotificacaoRepository.save(emailNotificacao);
             log.info("TENTATIVAS MÁXIMA ATINGIDA, NÃO FOI POSSÍVEL NOTIFICAR.");

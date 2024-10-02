@@ -19,14 +19,18 @@ public class Transferencia {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "payer")
     private Usuario payer;
 
     @ManyToOne
+    @JoinColumn(name = "payee")
     private Usuario payee;
 
+    @Column(name = "valor")
     private Double valor;
 
     @CreationTimestamp
+    @Column(name = "realizado_em")
     private LocalDateTime realizadoEm;
 
 }
