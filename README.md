@@ -55,6 +55,24 @@ Content-Type: application/json
 **Lógica de notificação:** Há um requisito que o pagador da transferência precisa receber uma notificação, esta será realizada por um outro serviço, onde poderá estar indisponível. 
 
 Minha implementação: O importante para o pagador é se a transferência foi realizada, após a transação o usuário não precisa ficar esperando o backend fazer uma solicitação para o serviço de notificação (isso levará tempo). Conclusão, poderemos fazer de forma assíncrona. Tentaremos 3 vezes se comunicar com o serviço de notificação, onde esperaremos 3 segundos até realizar uma nova tentativa, ao final, independente de ter sido com sucesso ou não, salvamos no banco de dados o status, a hora, número de tentativas dessa notificação de transferência.
+
+## Rode com o docker 🐳
+
+- Inicie o docker
+
+No terminal, Digite:
+```bash
+docker container run -p 8080:8080 caiovrodrigues/picpay-simplificado:latest
+```
+Pronto, o docker fará o download da imagem lá do docker hub e subirá um container com a aplicação sendo executada na porta 8080
+
+Já existem 2 usuários salvos no banco, experimente fazer uma transferência entre eles, faça uma requisição do tipo POST para ```http://localhost:8080/transfer```, passando no corpo da requisição as propriedades json apresentada acima, substituindo o valor de payer por 1 e payee por 2. 
+
+*Você poderá ver os logs da aplicação no terminal*
+
+*Essa aplicação usa o banco de dados em memória H2, acesse http://localhost:8080/h2-console para verificar as tabelas de Usuário, Transferência e Transferência notificação*
+
+
 ## Rode localmente
 
 Clone o projeto
