@@ -22,5 +22,5 @@ jobs:
           push: true
           tags: |
             caiovrodrigues/picpay-simplificado:latest
-            caiovrodrigues/picpay-simplificado:v1
+            caiovrodrigues/picpay-simplificado:${{github.run_number}}
         
