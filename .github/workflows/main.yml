@@ -1,0 +1,21 @@
+name: "CI"
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4.2.0
+      - name: Construção da imagem Docker
+      - uses: docker/build-push-action@v6.9.0
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: |
+            caiovrodrigues/picpay-simplificado:latest
+            caiovrodrigues/picpay-simplificado:v1
+        
