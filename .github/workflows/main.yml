@@ -10,7 +10,7 @@ jobs:
     steps: 
       - uses: actions/checkout@v4.2.0
       - name: Construção da imagem Docker
-      - uses: docker/build-push-action@v6.9.0
+        uses: docker/build-push-action@v6.9.0
         with:
           context: .
           file: Dockerfile
