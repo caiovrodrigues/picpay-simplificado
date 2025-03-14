@@ -1,7 +1,8 @@
-package com.desafio.picpay.services.strategy;
+package com.desafio.picpay.services.strategy.impl;
 
 import com.desafio.picpay.infrastructure.exceptions.Forbidden;
 import com.desafio.picpay.infrastructure.integration.AutorizadorService;
+import com.desafio.picpay.services.strategy.TransferenciaValidator;
 import com.desafio.picpay.web.domain.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 @Order(3)
-public class AutorizadorStrategy implements TransferenciaValidator{
+public class AutorizadorValidator implements TransferenciaValidator {
 
     private final AutorizadorService autorizadorService;
 
