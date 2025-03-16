@@ -5,16 +5,14 @@ import com.desafio.picpay.infrastructure.exceptions.SaldoInsuficienteException;
 import com.desafio.picpay.web.domain.Usuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(MockitoExtension.class)
 class SaldoSuficienteValidatorTest extends BaseTest {
 
-    @InjectMocks
+    @Autowired
     private SaldoSuficienteValidator validator;
 
     @Test

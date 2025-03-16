@@ -9,14 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@ExtendWith(MockitoExtension.class)
 class TipoUsuarioValidatorTest extends BaseTest {
 
-    @InjectMocks
+    @Autowired
     private TipoUsuarioValidator validator;
 
     @Test

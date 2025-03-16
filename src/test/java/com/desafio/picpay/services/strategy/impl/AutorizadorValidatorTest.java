@@ -7,8 +7,6 @@ import com.desafio.picpay.infrastructure.integration.AutorizadorUriProvider;
 import com.desafio.picpay.web.domain.Usuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import reactor.core.publisher.Mono;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class AutorizadorValidatorTest extends BaseTest {
 
     @MockBean
