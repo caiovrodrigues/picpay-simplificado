@@ -5,9 +5,11 @@ import com.desafio.picpay.web.domain.enums.TipoUsuario;
 import com.desafio.picpay.web.repositories.UsuarioRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Profile({"default"})
 @Component
 public class DatabaseLoaderFake {
 
