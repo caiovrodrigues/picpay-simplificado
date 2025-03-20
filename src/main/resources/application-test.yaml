@@ -14,6 +14,6 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
 
-integration:
-  autorizador:
-    uri: https://util.devi.tools/api/
+api:
+  base:
+    url: https://util.devi.tools/api/

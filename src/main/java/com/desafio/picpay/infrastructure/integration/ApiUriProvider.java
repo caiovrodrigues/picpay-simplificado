@@ -5,9 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Setter
-@ConfigurationProperties(prefix = "integration.autorizador")
+@ConfigurationProperties(prefix = "api.base")
 @Configuration
-public class AutorizadorUriProvider {
+public class ApiUriProvider {
 
     private String uri;
 
