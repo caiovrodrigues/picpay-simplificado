@@ -30,7 +30,12 @@ public class NotificacaoService {
 
     @Async(value = "asyncNotificacao")
     public void notificar(Transferencia transferencia){
-        log.info("MÉTODO notificar() sendo executado pela thread -> " + Thread.currentThread().getName());
+        log.info(
+                "Preparing notification: Payer {} - Payee {} - Value {}; Thread: {}",
+                transferencia.getPayer().getEmail(),
+                transferencia.getPayee().getEmail(),
+                transferencia.getValor(),
+                Thread.currentThread().getName());
         URI uri = UriComponentsBuilder.fromHttpUrl(apiUriProvider.notificacaoURI()).build().toUri();
 
         var emailNotificacao = TransferenciaNotificacao.builder().transferencia(transferencia).build();
@@ -39,13 +44,18 @@ public class NotificacaoService {
     }
 
     private void tentarNotificarAndSalvar(TransferenciaNotificacao emailNotificacao, URI uri, Instant instant, int tentativa) {
-        log.info("MÉTODO tentarNotificar() sendo executado pela thread -> " + Thread.currentThread().getName());
         if(tentativa > MAX_RETRIES){
             emailNotificacao.setStatus(EmailStatus.NOT_SENT);
             emailNotificacao.setTentativas(tentativa - 1);
             emailNotificacao.setEnviadoEm(null);
             emailNotificacaoRepository.save(emailNotificacao);
-            log.info("TENTATIVAS MÁXIMA ATINGIDA, NÃO FOI POSSÍVEL NOTIFICAR.");
+            log.info(
+                    "Notification failed: Payer {} - Payee {} - Value {}; Tentativas {} - Thread: {}",
+                    emailNotificacao.getTransferencia().getPayer().getNome(),
+                    emailNotificacao.getTransferencia().getPayee().getNome(),
+                    emailNotificacao.getTransferencia().getValor(),
+                    tentativa,
+                    Thread.currentThread().getName());
             return;
         }
         taskScheduler.schedule(() -> {
@@ -55,9 +65,14 @@ public class NotificacaoService {
                 emailNotificacao.setStatus(EmailStatus.SENT);
                 emailNotificacao.setEnviadoEm(LocalDateTime.now());
                 emailNotificacaoRepository.save(emailNotificacao);
-                log.info("USUÁRIO NOTIFICADO COM SUCESSO NA {}° TENTATIVA: ", tentativa);
+                log.info(
+                        "Notification succeeds: Payer {} - Payee {} - Value {}; Tentativas {} - Thread: {}",
+                        emailNotificacao.getTransferencia().getPayer().getNome(),
+                        emailNotificacao.getTransferencia().getPayee().getNome(),
+                        emailNotificacao.getTransferencia().getValor(),
+                        tentativa,
+                        Thread.currentThread().getName());
             } catch (Exception e) {
-                log.info("TENTATIVA DE NOTIFICAÇÃO FALHOU. Tentativa: {}; Tentando novamente em: {} segundos...", tentativa, SECONDS_WAIT_BEFORE_RETRY);
                 tentarNotificarAndSalvar(emailNotificacao, uri, instant.plusSeconds(SECONDS_WAIT_BEFORE_RETRY), tentativa + 1);
             }
         }, instant);
